@@ -30,7 +30,7 @@
                         <td>{{data.role_name}}</td>
                         <td>{{data.description}}</td>
                         <td>{{data.created_at}}</td>
-                        <td v-if="data.role_name !== 'Administrator'">
+                        <td v-if="data.id !== 1">
                             <button type="button" class="btn btn-primary" data-toggle="modal" @click="sendData(data)"
                                 data-target="#updateRole">
                                 Update Role
@@ -68,7 +68,7 @@
                             <div class="form-group">
                                 <label for="role_name">Role Name</label>
                                 <input v-model="role.role_name" class="form-control" type="text" name="role_name"
-                                    id="role_name" placeholder="Enter Role Name">
+                                    id="role_name" >
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
@@ -107,7 +107,7 @@
                             <div class="form-group">
                                 <label for="selectedRole_name">Role Name</label>
                                 <input v-model="selectedRole.role_name" class="form-control" type="text"
-                                    name="selectedRole_name" id="selectedRole_name" placeholder="Enter Role Name">
+                                    name="selectedRole_name" id="selectedRole_name" >
                             </div>
                             <div class="form-group">
                                 <label for="selectedRole_description">Description</label>
@@ -149,7 +149,6 @@
                 loading: true,
                 message: '',
                 selectedRole: {},
-                test: {},
             }
         },
 
@@ -165,7 +164,7 @@
             },
 
             async getRoles() {
-                await axios.get('/api/get/roles').then(response => {
+                await axios.get('/get/roles').then(response => {
                     this.roles = response.data;
                     this.loading = false;
                 });
@@ -173,7 +172,7 @@
 
             async createRole() {
                 this.loading = true;
-                await axios.post('/api/insert/roles', this.role).then(response => {
+                await axios.post('/insert/roles', this.role).then(response => {
                     this.message = response;
                     this.getRoles();
                 });
@@ -182,7 +181,7 @@
 
             async updateRole() {
                 this.loading = true;
-                await axios.put('/api/update/roles', this.selectedRole).then(response => {
+                await axios.put('/update/roles', this.selectedRole).then(response => {
                     this.message = response;
                     this.getRoles();
 
@@ -193,7 +192,7 @@
 
 
                 this.loading = true;
-                await axios.delete('/api/delete/roles', {
+                await axios.delete('/delete/roles', {
                     params: {
                         'id': data.id
                     }
@@ -218,12 +217,6 @@
 
 
     }
-    $('#btnSave').on("click", function (event) {
-        // submit form via ajax, then
-
-        event.preventDefault();
-        $('#updateRole').modal('hide');
-    });
 
 </script>
 
