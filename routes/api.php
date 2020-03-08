@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+//Roles
+Route::get('/get/roles', 'RoleController@get')->name('getRoles');
+Route::post('/insert/roles', 'RoleController@insert')->name('insertRoles');
+Route::put('/update/roles', 'RoleController@update')->name('updateRoles');
+Route::delete('/delete/roles', 'RoleController@delete')->name('deleteRoles');
