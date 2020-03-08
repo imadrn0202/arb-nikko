@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoleRequest;
 use Illuminate\Http\Request;
 use App\Repositories\RoleRepository;
 
@@ -22,7 +23,7 @@ class RoleController extends Controller
 
     }
 
-    public function insert(Request $request) {
+    public function insert(RoleRequest $request) {
 
         $response = $this->roleRepository->insert($request);
 

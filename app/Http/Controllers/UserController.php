@@ -16,13 +16,23 @@ class UserController extends Controller
                 'users' => $users->toArray()
             ], 200);
     }
-    public function show(Request $request, $id)
-    {
+    public function show(Request $request, $id) {
         $user = User::find($id);
         return response()->json(
             [
                 'status' => 'success',
                 'user' => $user->toArray()
             ], 200);
+    }
+
+    public function changePassword(Request $request) {
+
+        User::where('id', $request->id)->update(['password' => bcrypt($request->password)]);
+
+        return response()->json(
+            [
+                'status' => 'success',
+            ], 200);
+
     }
 }

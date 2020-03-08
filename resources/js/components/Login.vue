@@ -5,19 +5,15 @@
                 <label for="exampleInputEmail1">Email address</label>
                 <input v-model="data.email" type="email" class="form-control" id="exampleInputEmail1"
                     aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                    else.</small>
+    
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
                 <input v-model="data.password" type="password" class="form-control" id="exampleInputPassword1"
                     placeholder="Password">
             </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button :disabled="status === true || loading === true" type="submit" class="btn btn-primary">Submit</button>
+            <small class="text-danger" v-if="status === false">Wrong credentials</small>
         </form>
     </div>
 </template>
@@ -27,12 +23,14 @@
         data() {
             return {
                 data: {},
-                hasError: false
+                status: '',
+                loading: '',
             }
         },
 
         methods: {
             login() {
+                    this.loading = true;
                 // get the redirect object
                 var redirect = this.$auth.redirect()
                 var app = this
@@ -42,15 +40,18 @@
                         password: this.data.password
                     },
                     success: function () {
+                        this.loading = false;
+                        this.status = true;
                         // handle redirection
                         const redirectTo = redirect ? redirect.from.name : this.$auth.user().role === 1 ?
-                            'roles' : 'roles'
+                            'roles' : 'Expense'
                         this.$router.push({
                             name: redirectTo
                         })
                     },
                     error: function () {
-                        app.has_error = true
+                        this.status = false
+                        this.loading = false;
                     },
                     rememberMe: true,
                     fetchUser: true

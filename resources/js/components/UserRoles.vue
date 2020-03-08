@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <h2 class="text-success" v-if="message.status == 200"> Success ! </h2>
+        <h2 class="text-success" v-if="message.status == 200"> Saved at Database ! </h2>
 
         <div>
 
@@ -133,9 +133,9 @@
                             
                              <div class="form-group">
                                 <label for="role">Role</label>
-                                <select v-model="selectedUserRole.role" class="form-control" type="text" name="role" id="role">
-                                    <option :value="selectedUserRole.roles[0].id">Current Role: {{selectedUserRole.roles[0].role_name}}</option>
-                                    <option v-for="data in roles" :key="data.id" :value="data.id">{{data.role_name}}</option>
+                                <select v-model="selectedUserRole.role" :required="true" class="form-control" type="text" name="role" id="role">
+                                    <option :selected="true" :value="selectedUserRole.roles[0].id">Current Role: {{selectedUserRole.roles[0].role_name}}</option>
+                                    <option v-for="role in roles" :key="role.id" :value="role.id">{{role.role_name}}</option>
                                     </select>
                             </div>
 
@@ -146,7 +146,7 @@
                                 <span class="sr-only">Loading...</span>
                             </div>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button @click="hideModal" id="btnSave" type="submit" class="btn btn-success">Save
+                            <button id="btnSave" type="submit" class="btn btn-success">Save
                                 changes</button>
                         </div>
                     </form>

@@ -8,7 +8,7 @@ const config = {
   auth: bearer,
   http: axios,
   router: router,
-  tokenDefaultName: 'laravel-vue-spa',
+  tokenDefaultName: 'laravel-arb-nikko',
   tokenStore: ['localStorage'],
   rolesVar: 'role',
   registerData: {url: 'auth/register', method: 'POST', redirect: '/login'},

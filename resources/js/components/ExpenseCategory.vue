@@ -9,36 +9,37 @@
             </div>
         </div>
 
-        <h2 class="text-success" v-if="message.status == 200"> Success ! </h2>
+        <h2 class="text-success" v-if="message.status == 200"> Saved At Database ! </h2>
+         <h2 class="text-danger" v-if="message.exception && message.status != 200"> {{ message }} </h2>
 
         <div>
 
-            <h2>Roles</h2>
+            <h2>Expense Category</h2>
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Role Name</th>
+                        <th scope="col">Display Name</th>
                         <th scope="col">Description</th>
                         <th scope="col">Created At</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="data in roles" :key="data.id">
+                    <tr v-for="data in expenseCategories" :key="data.id">
                         <th scope="row">{{data.id}}</th>
-                        <td>{{data.role_name}}</td>
+                        <td>{{data.display_name}}</td>
                         <td>{{data.description}}</td>
                         <td>{{data.created_at}}</td>
-                        <td v-if="data.id !== 1">
+                        <td>
                             <button type="button" class="btn btn-primary" data-toggle="modal" @click="sendData(data)"
-                                data-target="#updateRole">
-                                Update Role
+                                data-target="#updateExpenseCategory">
+                                Update Expense Category
                             </button>
 
 
-                            <form @submit.prevent="deleteRole(data)" method="delete">
-                                <button type="submit" class="btn btn-danger"> Delete Role
+                            <form @submit.prevent="deleteExpenseCategory(data)" method="delete">
+                                <button type="submit" class="btn btn-danger"> Delete Expense Category
                                 </button>
                             </form>
                         </td>
@@ -47,37 +48,36 @@
             </table>
 
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createRole">
-                Create Role
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createExpenseCategory">
+                Create ExpenseCategory
             </button>
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="createRole" tabindex="-1" role="dialog" aria-labelledby="createRoleLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="createExpenseCategory" tabindex="-1" role="dialog"
+            aria-labelledby="createExpenseCategoryLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="createRoleLabel">Create Role</h5>
+                        <h5 class="modal-title" id="createExpenseCategoryLabel">Create ExpenseCategory</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="createRole" method="post">
+                    <form @submit.prevent="createExpenseCategory" method="post">
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="role_name">Role Name</label>
-                                <input :required="true" v-model="role.role_name" class="form-control" type="text" name="role_name"
-                                    id="role_name" >
+                                <label for="expense_category_name">Expense Category Name</label>
+                                <input v-model="expenseCategory.display_name" class="form-control" type="text"
+                                    name="expense_category_name" id="expense_category_name">
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <textarea :required="true" v-model="role.description" class="form-control" name="description"
+                                <textarea v-model="expenseCategory.description" class="form-control" name="description"
                                     id="description" cols="30" rows="10"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <p v-if="hasError != null"> {{hasError}}</p>
                             <p v-if="loading === true" class="text-success"> Creating . . . </p>
                             <div v-if="loading === true" class="spinner-border text-success" role="status">
                                 <span class="sr-only">Loading...</span>
@@ -93,28 +93,28 @@
 
 
         <!-- Modal -->
-        <div class="modal fade" id="updateRole" tabindex="-1" role="dialog" aria-labelledby="updateRoleLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="updateExpenseCategory" tabindex="-1" role="dialog"
+            aria-labelledby="updateExpenseCategoryLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="updateRoleLabel">Create Role</h5>
+                        <h5 class="modal-title" id="updateExpenseCategoryLabel">Create ExpenseCategory</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="updateRole" method="put">
+                    <form @submit.prevent="updateExpenseCategory" method="put">
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="selectedRole_name">Role Name</label>
-                                <input :required="true" v-model="selectedRole.role_name" class="form-control" type="text"
-                                    name="selectedRole_name" id="selectedRole_name" >
+                                <label for="selectedExpenseCategory_name">ExpenseCategory Name</label>
+                                <input v-model="selectedExpenseCategory.display_name" class="form-control" type="text"
+                                    name="selectedExpenseCategory_name" id="selectedExpenseCategory_name">
                             </div>
                             <div class="form-group">
-                                <label for="selectedRole_description">Description</label>
-                                <textarea :required="true" v-model="selectedRole.description" class="form-control"
-                                    name="selectedRole_description" id="selectedRole_description" cols="30"
-                                    rows="10"></textarea>
+                                <label for="selectedExpenseCategory_description">Description</label>
+                                <textarea v-model="selectedExpenseCategory.description" class="form-control"
+                                    name="selectedExpenseCategory_description" id="selectedExpenseCategory_description"
+                                    cols="30" rows="10"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -123,7 +123,7 @@
                                 <span class="sr-only">Loading...</span>
                             </div>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button  id="btnSave" type="submit" class="btn btn-success">Save
+                            <button id="btnSave" type="submit" class="btn btn-success">Save
                                 changes</button>
                         </div>
                     </form>
@@ -145,56 +145,55 @@
 
         data() {
             return {
-                roles: {},
-                role: {},
+                expenseCategories: {},
+                expenseCategory: {},
                 loading: true,
                 message: '',
-                selectedRole: {},
-                hasError: '',
+                selectedExpenseCategory: {},
             }
         },
 
         beforeMount() {
-            this.getRoles();
+            this.getExpenseCategory();
         },
 
         methods: {
 
-            async getRoles() {
-                await axios.get('/get/roles').then(response => {
-                    this.roles = response.data;
+            hideModal() {
+                $('#updateExpenseCategory').modal('hide');
+                $('#createExpenseCategory').modal('hide');
+            },
+
+            async getExpenseCategory() {
+                await axios.get('/get/expensecategory').then(response => {
+                    this.expenseCategories = response.data;
                     this.loading = false;
                 });
             },
 
-            async createRole() {
+            async createExpenseCategory() {
                 this.loading = true;
-                await axios.post('/insert/roles', this.role).then(response => {
+                await axios.post('/insert/expensecategory', this.expenseCategory).then(response => {
                     this.message = response;
-                    this.getRoles();
-
-                    console.log(response.data);
-                }).catch(error => {
-                    console.log(error.data);
-                    this.hasError = error.data.errors;
+                    this.getExpenseCategory();
                 });
 
             },
 
-            async updateRole() {
+            async updateExpenseCategory() {
                 this.loading = true;
-                await axios.put('/update/roles', this.selectedRole).then(response => {
+                await axios.put('/update/expensecategory', this.selectedExpenseCategory).then(response => {
                     this.message = response;
-                    this.getRoles();
+                    this.getExpenseCategory();
 
                 });
             },
 
-            async deleteRole(data) {
+            async deleteExpenseCategory(data) {
 
 
                 this.loading = true;
-                await axios.delete('/delete/roles', {
+                await axios.delete('/delete/expensecategory', {
                     params: {
                         'id': data.id
                     }
@@ -202,15 +201,17 @@
                     console.log(data);
 
                     this.message = response;
-                    this.getRoles();
+                    this.getExpenseCategory();
 
+                }).catch(error => {
+                    this.message = error;
                 });
             },
 
             sendData(role) {
 
                 console.log(role);
-                this.selectedRole = role;
+                this.selectedExpenseCategory = role;
             }
 
 

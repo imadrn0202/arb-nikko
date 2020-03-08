@@ -32,12 +32,28 @@ Route::group(['middleware' => 'auth:api', ['auth:web','checkAdmin']], function()
     Route::get('/get/userroles', 'UserRoleController@get')->name('getUserRoles');
     Route::post('/insert/userroles', 'UserRoleController@insert')->name('insertUserRoles');
     Route::put('/update/userroles', 'UserRoleController@update')->name('updateUserRoles');
-    Route::delete('/delete/userroles', 'UserRoleController@delete')->name('deleteRoles');
+    Route::delete('/delete/userroles', 'UserRoleController@delete')->name('deleteUserRoles');
+
+    //expense category
+    Route::get('/get/expensecategory', 'ExpenseCategoryController@get')->name('getExpenseCategory');
+    Route::post('/insert/expensecategory', 'ExpenseCategoryController@insert')->name('insertExpenseCategory');
+    Route::put('/update/expensecategory', 'ExpenseCategoryController@update')->name('updateExpenseCategory');
+    Route::delete('/delete/expensecategory', 'ExpenseCategoryController@delete')->name('deleteExpenseCategory');
+
+  
 
 });
 
 Route::group(['middleware' => 'auth:api', ['auth:web','hasAdminPermission']], function(){
-    // Users
+    
+    //expense category
+    Route::get('/get/expense/', 'ExpenseController@get')->name('getExpense');
+    Route::get('/show/expense/{id}', 'ExpenseController@show')->name('showExpense');
+    Route::post('/insert/expense', 'ExpenseController@insert')->name('insertExpense');
+    Route::put('/update/expense', 'ExpenseController@update')->name('updateExpense');
+    Route::delete('/delete/expense', 'ExpenseController@delete')->name('deleteExpense');
+
+
     Route::get('users/{id}', 'UserController@show');
 });
 
@@ -53,6 +69,7 @@ Route::prefix('auth')->group(function () {
 
 
     Route::group(['middleware' => 'auth:api'], function(){
+        Route::put('changepassword', 'UserController@changePassword');
         Route::get('user', 'AuthController@user');
         Route::post('logout', 'AuthController@logout');
     });

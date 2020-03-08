@@ -6,8 +6,12 @@ import router from './router';
 import VueAxios from 'vue-axios';
 import auth from './auth';
 import VueAuth from '@websanova/vue-auth';
+import App from './assets/App';
 
 require('./bootstrap');
+
+
+
 
 Vue.router = router;
 Vue.use(VueRouter);
@@ -22,6 +26,7 @@ Vue.use(VueAuth, auth);
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    render: app => app(App)
 });
 

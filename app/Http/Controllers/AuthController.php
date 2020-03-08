@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\UserRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,6 +31,11 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->password = bcrypt($request->password);
         $user->save();
+
+        UserRole::create([
+            'role_id' => 2,
+            'user_id' => $user->id
+        ]);
 
         return response()->json(['status' => 'success'], 200);
     }
